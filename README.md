@@ -13,6 +13,7 @@ any time with `Space help`. Configuration changes take effect when you restart N
 - `jk`: leave insert mode. Ctrl-S: save. `ww`: save all.
 - `q`: close window. `qq`: quit all. `Space qq`: quit with a prompt for unsaved work.
 - `Space 0` / `Space fi`: format. Formatting never runs automatically on save.
+- `Space r`: save and run the current source file in a terminal pane. Escape twice returns to editing.
 - `Space vi`: edit init.lua. The small init.lua loads the modules described below.
 
 The layout uses Gruvbox, relative line numbers, a buffer bar at the top, and a
@@ -83,7 +84,9 @@ because it includes the old local plugin installation as well as init.vim.
 
 Neovim also uses its standard cache, ShaDa, and log locations. Check `:echo
 stdpath('data')`, `:echo stdpath('state')`, and `:echo stdpath('cache')` for exact
-paths on other machines. Nerd Font icons are optional; the tools work without them.
+paths on other machines. UI labels and separators use ordinary characters, so no
+Nerd Font is required. Twilight uses a fixed context of lines, avoiding parser errors
+in terminal panes and files without a syntax parser.
 
 ## Mapping guide
 
@@ -157,7 +160,14 @@ Tab / Shift-Tab moves through snippet fields and otherwise retains normal behavi
 | `[g` / `]g` | Previous / next diagnostic |
 | `Space ld` | Explain diagnostics on current line |
 | `Space 0`, `Space fi` | Format buffer or Visual selection |
-| `Space 9`, `Space run` | Save and run Python file in terminal |
+| `Space r`, `Space 9`, `Space run` | Save and run the current source file in a terminal pane |
+
+The runner supports Python, JavaScript, Lua (using a clean Neovim Lua process),
+shell scripts, Ruby, Perl, and Swift when their interpreters are installed.
+Python uses an active virtual environment, then the nearest `.venv`/`venv`, then
+`python3`. Runs start in the file's directory; filenames with spaces are supported.
+Unsupported filetypes show a message. Because `Space rn` still renames symbols,
+`Space r` waits briefly for a possible continuation before running.
 
 Python uses Pyright for type analysis, Ruff for linting/import organization and
 formatting. Lua uses lua-language-server and StyLua. Swift uses SourceKit when

@@ -15,6 +15,27 @@ if not vim.uv.fs_stat(path) then
 end
 vim.opt.rtp:prepend(path)
 require("lazy").setup({ { import = "plugins" } }, {
+	rocks = { enabled = false },
+	ui = {
+		icons = {
+			cmd = ":",
+			config = "cfg",
+			event = "event",
+			ft = "ft",
+			init = "init",
+			import = "import",
+			keys = "key",
+			lazy = "lazy",
+			loaded = "+",
+			not_loaded = "-",
+			plugin = "plugin",
+			runtime = "runtime",
+			source = "source",
+			start = "start",
+			task = "task",
+			list = { "-", ">", "*" },
+		},
+	},
 	root = root .. "/lazy",
 	lockfile = vim.fn.stdpath("config") .. "/lazy-lock.json",
 	defaults = { lazy = true },

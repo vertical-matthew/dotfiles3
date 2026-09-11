@@ -125,19 +125,10 @@ for _, key in ipairs({ "<leader>0", "<leader>fi" }) do
 		require("conform").format({ async = true, lsp_format = "fallback" })
 	end, "Format")
 end
-for _, key in ipairs({ "<leader>9", "<leader>run" }) do
+for _, key in ipairs({ "<leader>r", "<leader>9", "<leader>run" }) do
 	map("n", key, function()
-		if vim.bo.filetype ~= "python" then
-			vim.notify("This shortcut runs Python files")
-			return
-		end
-		vim.cmd.write()
-		local file = vim.api.nvim_buf_get_name(0)
-		vim.cmd.botright("12split")
-		vim.cmd.enew()
-		vim.fn.jobstart({ "python3", file }, { term = true })
-		vim.cmd.startinsert()
-	end, "Run Python in terminal")
+		require("core.runner").run()
+	end, "Save and run current file")
 end
 map("n", "<leader>s", ":%s/", "Substitute with live preview", { silent = false })
 map("n", "<leader>sp", "<cmd>GrugFar<cr>", "Project replace")

@@ -13,6 +13,7 @@ return {
 				["<S-Tab>"] = { "snippet_backward", "fallback" },
 			},
 			completion = {
+				menu = { draw = { columns = { { "label", "label_description", gap = 1 }, { "kind" } } } },
 				list = { selection = { preselect = false, auto_insert = false } },
 				documentation = { auto_show = true },
 			},
@@ -46,6 +47,7 @@ return {
 				end
 			end
 			vim.diagnostic.config({
+				signs = { text = { [1] = "E", [2] = "W", [3] = "I", [4] = "H" } },
 				severity_sort = true,
 				virtual_text = false,
 				underline = true,

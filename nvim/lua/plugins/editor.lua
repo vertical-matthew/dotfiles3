@@ -1,3 +1,24 @@
+local plain_keys = {
+	Up = "Up",
+	Down = "Down",
+	Left = "Left",
+	Right = "Right",
+	C = "Ctrl-",
+	M = "Alt-",
+	D = "Cmd-",
+	S = "Shift-",
+	CR = "Enter",
+	Esc = "Esc",
+	ScrollWheelDown = "ScrollDown",
+	ScrollWheelUp = "ScrollUp",
+	NL = "Enter",
+	BS = "Backspace",
+	Space = "Space",
+	Tab = "Tab",
+}
+for i = 1, 12 do
+	plain_keys["F" .. i] = "F" .. i
+end
 return {
 	{
 		"ellisonleao/gruvbox.nvim",
@@ -14,8 +35,21 @@ return {
 		event = "VeryLazy",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		opts = {
-			options = { theme = "gruvbox", globalstatus = true },
-			sections = { lualine_c = { { "filename", path = 1 } } },
+			options = {
+				theme = "gruvbox",
+				globalstatus = true,
+				icons_enabled = false,
+				component_separators = "|",
+				section_separators = "",
+			},
+			sections = {
+				lualine_b = {
+					{ "branch", icon = "" },
+					"diff",
+					{ "diagnostics", symbols = { error = "E:", warn = "W:", info = "I:", hint = "H:" } },
+				},
+				lualine_c = { { "filename", path = 1 } },
+			},
 		},
 	},
 	{
@@ -25,14 +59,31 @@ return {
 		init = function()
 			vim.g.barbar_auto_setup = false
 		end,
-		opts = { animation = false },
+		opts = {
+			animation = false,
+			icons = {
+				filetype = { enabled = false },
+				button = "x",
+				modified = { button = "*" },
+				separator = { left = "|", right = "" },
+				scroll = { left = "<", right = ">" },
+			},
+		},
 	},
-	{ "folke/which-key.nvim", event = "VeryLazy", opts = { delay = 400 } },
+	{
+		"folke/which-key.nvim",
+		event = "VeryLazy",
+		opts = {
+			delay = 400,
+			icons = { mappings = false, breadcrumb = ">", separator = "->", group = "+", keys = plain_keys },
+		},
+	},
 	{
 		"stevearc/oil.nvim",
 		cmd = "Oil",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
 		opts = {
+			columns = { "permissions", "size" },
 			view_options = { show_hidden = true },
 			delete_to_trash = true,
 			skip_confirm_for_simple_edits = false,
@@ -47,7 +98,13 @@ return {
 		},
 		config = function()
 			require("telescope").setup({
-				defaults = { file_ignore_patterns = { "node_modules/", "%.git/" } },
+				defaults = {
+					file_ignore_patterns = { "node_modules/", "%.git/" },
+					prompt_prefix = "> ",
+					selection_caret = "> ",
+					entry_prefix = "  ",
+					disable_devicons = true,
+				},
 				pickers = { find_files = { hidden = true } },
 			})
 			require("telescope").load_extension("fzf")
@@ -85,7 +142,8 @@ return {
 		end,
 	},
 	{ "folke/zen-mode.nvim", cmd = "ZenMode", opts = { window = { width = 90 } } },
-	{ "folke/twilight.nvim", cmd = "Twilight", opts = {} },
+	-- Neovim 0.12 returns nil for missing parsers; Twilight's TS path assumes a parser.
+	{ "folke/twilight.nvim", cmd = "Twilight", opts = { treesitter = false } },
 	{ "MagicDuck/grug-far.nvim", cmd = "GrugFar", opts = {} },
 	{
 		"nvim-orgmode/orgmode",
