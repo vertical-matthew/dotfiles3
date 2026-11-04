@@ -1,0 +1,11 @@
+{
+  "name": "dotfiles3-language-tools",
+  "private": true,
+  "version": "1.0.0",
+  "dependencies": {
+    "typescript": "*",
+    "typescript-language-server": "*",
+    "vscode-langservers-extracted": "*",
+    "intelephense": "*"
+  }
+}

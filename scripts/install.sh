@@ -39,8 +39,9 @@ if [[ ! -L "$config_dir" || "$(readlink "$config_dir")" != "$repo_dir/nvim" ]]; 
   fi
   ln -s "$repo_dir/nvim" "$config_dir"
 fi
+bash "$repo_dir/scripts/install-tools.sh"
 nvim --headless '+Lazy! restore' +qa
-nvim --headless '+lua require("nvim-treesitter").install({"lua", "vim", "vimdoc", "query", "python", "bash", "json", "javascript", "typescript", "tsx", "html", "css", "markdown", "markdown_inline", "swift"}):wait(300000)' +qa
+nvim --headless '+lua require("nvim-treesitter").install({"lua", "vim", "vimdoc", "query", "python", "bash", "json", "javascript", "typescript", "tsx", "html", "css", "markdown", "markdown_inline", "swift", "php", "php_only"}):wait(300000)' +qa
 DOTFILES3_VERIFY="$repo_dir/scripts/verify.lua" nvim --headless '+lua local ok, err = pcall(dofile, vim.env.DOTFILES3_VERIFY); if not ok then print(err); vim.cmd("cquit 1") end' +qa
 echo "Installed. Open: nvim $repo_dir/README.md"
 echo "Rollback: bash $repo_dir/scripts/install.sh --restore"

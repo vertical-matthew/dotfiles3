@@ -27,6 +27,18 @@ return {
 		dependencies = { "saghen/blink.cmp" },
 		config = function()
 			vim.lsp.config("*", { capabilities = require("blink.cmp").get_lsp_capabilities() })
+			vim.lsp.config("pyright", {
+				root_dir = function(buf, on_dir)
+					on_dir(require("core.project").root(buf))
+				end,
+				before_init = function(_, config)
+					config.settings = vim.tbl_deep_extend("force", config.settings or {}, {
+						python = {
+							pythonPath = require("core.python").executable(config.root_dir .. "/placeholder.py"),
+						},
+					})
+				end,
+			})
 			vim.lsp.config("lua_ls", {
 				settings = {
 					Lua = {
@@ -43,6 +55,11 @@ return {
 				sourcekit = "sourcekit-lsp",
 			}) do
 				if vim.fn.executable(executable) == 1 then
+					vim.lsp.enable(server)
+				end
+			end
+			if require("features").web then
+				for _, server in ipairs({ "ts_ls", "html", "cssls", "jsonls", "intelephense" }) do
 					vim.lsp.enable(server)
 				end
 			end

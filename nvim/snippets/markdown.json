@@ -1,0 +1,7 @@
+{
+  "Review checklist": {
+    "prefix": "reviewcheck",
+    "body": ["## ${1:Review}", "", "- [ ] Changes inspected", "- [ ] Tests passed", "- [ ] Documentation updated", "- [ ] GitHub updated", "$0"],
+    "description": "Project change review checklist"
+  }
+}

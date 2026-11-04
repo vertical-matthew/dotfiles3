@@ -1,4 +1,5 @@
 local o = vim.opt
+vim.env.PATH = vim.fn.stdpath("data") .. "/dotfiles3/tools/node_modules/.bin:" .. vim.env.PATH
 o.number = true
 o.relativenumber = true
 o.termguicolors = true

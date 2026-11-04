@@ -3,7 +3,11 @@ local function map(mode, lhs, rhs, desc, extra)
 end
 local function pick(name)
 	return function()
-		require("telescope.builtin")[name]()
+		local opts = {}
+		if name == "find_files" or name == "live_grep" then
+			opts.cwd = require("core.project").root()
+		end
+		require("telescope.builtin")[name](opts)
 	end
 end
 local function org(action)

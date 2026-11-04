@@ -17,27 +17,7 @@ function M.command(file, filetype)
 		return nil, "No runner configured for " .. (filetype ~= "" and filetype or "this filetype")
 	end
 	if filetype == "python" then
-		local candidates = {}
-		if vim.env.VIRTUAL_ENV then
-			table.insert(candidates, vim.env.VIRTUAL_ENV .. "/bin/python")
-		end
-		local dir = vim.fs.dirname(file)
-		while dir do
-			for _, name in ipairs({ ".venv", "venv" }) do
-				table.insert(candidates, dir .. "/" .. name .. "/bin/python")
-			end
-			local parent = vim.fs.dirname(dir)
-			if parent == dir then
-				break
-			end
-			dir = parent
-		end
-		for _, executable in ipairs(candidates) do
-			if vim.fn.executable(executable) == 1 then
-				command = { executable }
-				break
-			end
-		end
+		command = { require("core.python").executable(file) }
 	end
 	if vim.fn.executable(command[1]) ~= 1 then
 		return nil, "Runner is not installed: " .. command[1]
@@ -62,7 +42,7 @@ function M.run()
 		return
 	end
 	vim.cmd("botright 12new")
-	local job = vim.fn.jobstart(command, { term = true, cwd = vim.fs.dirname(file) })
+	local job = vim.fn.jobstart(command, { term = true, cwd = require("core.project").root(vim.fn.bufnr(file)) })
 	if job <= 0 then
 		vim.notify("Unable to start file runner", vim.log.levels.ERROR)
 		return

@@ -8,6 +8,13 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 vim.api.nvim_create_autocmd("FileType", {
 	group = group,
 	callback = function(args)
+		if vim.b[args.buf].bigfile or args.match == "bigfile" then
+			vim.b[args.buf].bigfile = true
+			vim.opt_local.foldmethod = "manual"
+			vim.opt_local.spell = false
+			vim.b[args.buf].miniindentscope_disable = true
+			return
+		end
 		vim.opt_local.formatoptions:remove({ "t", "o" })
 		if vim.tbl_contains({ "markdown", "text", "org", "gitcommit" }, args.match) then
 			vim.opt_local.spell = true

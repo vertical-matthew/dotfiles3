@@ -1,0 +1,12 @@
+{
+  "Audit record": {
+    "prefix": "auditrecord",
+    "body": ["def audit_record(record):", "    \"\"\"Check a record and return its issues.\"\"\"", "    issues = []", "    ${1:# Add validation checks here}", "    return issues", "$0"],
+    "description": "Non-mutating record validation function"
+  },
+  "Pytest case": {
+    "prefix": "testcase",
+    "body": ["def test_${1:behavior}():", "    assert ${2:actual} == ${3:expected}", "$0"],
+    "description": "Small pytest test"
+  }
+}
